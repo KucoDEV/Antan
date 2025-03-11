@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Antan - Digital Production</title>
+    <link rel="icon" type="image/png" href="AttanW.png" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/jsm/objects/Water.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/jsm/objects/Sky.js"></script>
     <style>
         body {
             margin: 0;
@@ -12,6 +15,7 @@
             font-family: Arial, sans-serif;
             color: white;
             text-align: center;
+            background-color: black;
         }
         .overlay {
             position: absolute;
@@ -23,9 +27,17 @@
         h1 {
             font-size: 2.5em;
             font-weight: bold;
+            text-shadow: 0px 0px 20px rgba(255,255,255,0.5);
         }
         .duo {
             color: #e74c3c;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.8em;
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -33,52 +45,78 @@
     <div class="overlay">
         <h1>Digital Production<br><span class="duo">Duo</span> Toward Innovative<br>And Immersive Projects</h1>
     </div>
+    <div class="footer">Based in France.<br><strong>Available Worldwide.</strong></div>
     <script>
-        // Création de la scène 3D
         const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.05);
+        
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000);
         document.body.appendChild(renderer.domElement);
 
-        // Ajout de la lumière
-        const light = new THREE.PointLight(0xffffff, 1, 100);
-        light.position.set(0, 5, 5);
-        scene.add(light);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
 
-        // Création du logo en 3D avec Three.js
+        const spotLight = new THREE.SpotLight(0x00ff99, 2, 100, Math.PI / 4, 1, 2);
+        spotLight.position.set(0, 5, 5);
+        scene.add(spotLight);
+
         const group = new THREE.Group();
 
-        // Cercle central
-        const circleGeometry = new THREE.TorusGeometry(1.2, 0.2, 16, 100);
-        const circleMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff99, emissive: 0x005533 });
+        const circleGeometry = new THREE.TorusGeometry(1.5, 0.3, 16, 100);
+        const circleMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff99, emissive: 0x006633 });
         const circle = new THREE.Mesh(circleGeometry, circleMaterial);
         group.add(circle);
 
-        // Vagues (barres verticales)
         for (let i = -3; i <= 3; i++) {
             const barGeometry = new THREE.CylinderGeometry(0.1, 0.1, Math.abs(i) * 0.4 + 0.4, 32);
-            const barMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+            const barMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x444444 });
             const bar = new THREE.Mesh(barGeometry, barMaterial);
-            bar.position.set(i * 0.3, 0, 0);
+            bar.position.set(i * 0.35, 0, 0);
             group.add(bar);
         }
 
-        // Positionner le logo
+        const pointLight = new THREE.PointLight(0x00ff99, 1.5, 10);
+        pointLight.position.set(0, 0, 2);
+        group.add(pointLight);
+
+        group.position.set(0, -2, 0);
         scene.add(group);
 
-        // Positionnement de la caméra
+        const waterGeometry = new THREE.PlaneGeometry(20, 20);
+        const waterMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x002244, 
+            transparent: true, 
+            opacity: 0.9, 
+            metalness: 1, 
+            roughness: 0.1 
+        });
+        const water = new THREE.Mesh(waterGeometry, waterMaterial);
+        water.rotation.x = -Math.PI / 2;
+        water.position.y = -2;
+        scene.add(water);
+
+        function animateWater() {
+            const time = Date.now() * 0.002;
+            waterMaterial.opacity = 0.7 + 0.1 * Math.sin(time);
+        }
+
+        const sky = new THREE.Sky();
+        sky.scale.setScalar(10000);
+        scene.add(sky);
+
         camera.position.z = 5;
 
-        // Animation de la scène
         function animate() {
             requestAnimationFrame(animate);
-            group.rotation.y += 0.01; // Rotation du logo
+            group.rotation.y += 0.005;
+            animateWater();
             renderer.render(scene, camera);
         }
         animate();
 
-        // Ajustement de la taille au redimensionnement
         window.addEventListener('resize', () => {
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.aspect = window.innerWidth / window.innerHeight;
