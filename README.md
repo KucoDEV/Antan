@@ -36,7 +36,7 @@ antan/
 
 1. Clonez ce dépôt :
    ```bash
-   git clone [URL du dépôt]
+   git clone https://github.com/KucoDEV/Antan.git
    ```
 2. Ouvrez directement le fichier `index.html` dans votre navigateur.
 
