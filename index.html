@@ -14,21 +14,7 @@
             text-align: center;
             background-color: black;
         }
-        .overlay {
-            position: absolute;
-            top: 50%;
-            left: 10%;
-            transform: translateY(-50%);
-            text-align: left;
-        }
-        h1 {
-            font-size: 2.5em;
-            font-weight: bold;
-            text-shadow: 0px 0px 20px rgba(255,255,255,0.5);
-        }
-        .duo {
-            color: #e74c3c;
-        }
+
         .footer {
             position: absolute;
             bottom: 10px;
@@ -36,16 +22,54 @@
             font-size: 0.8em;
             opacity: 0.7;
         }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        .rgbKineticSlider {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .rgbKineticSlider canvas {
+            position: absolute;
+            display: block;
+            top: 0 !important;
+            left: 0 !important;
+            transform: scale(1) !important;
+        }
+
+        .rgbKineticSlider .text-title,
+        .rgbKineticSlider .text-subtitle {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .rgbKineticSlider .text-container {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="overlay">
-        <h1>Digital Production<br><span class="duo">Duo</span> Toward Innovative<br>And Immersive Projects</h1>
-    </div>
+    <div id="rgbKineticSlider" class="rgbKineticSlider"></div>
+
     <div class="footer">Based in France.<br><strong>Available Worldwide.</strong></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hmongouachon/rgbKineticSlider/js/libs/TweenMax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hmongouachon/rgbKineticSlider/js/libs/imagesLoaded.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hmongouachon/rgbKineticSlider/js/libs/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hmongouachon/rgbKineticSlider/js/libs/pixi-filters.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hmongouachon/rgbKineticSlider/js/rgbKineticSlider.js"></script> 
     <script src="./scripts.js"></script>
 
 </body>

@@ -1,39 +1,69 @@
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { ObjectLoader } from 'three/src/loaders/ObjectLoader.js';
+// images setup
+const images = [
+  "https://images.unsplash.com/photo-1543777166-81504743e51e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=1920",
+  "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1483982258113-b72862e6cff6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=80"
+];
 
-// Création de la scène, de la caméra et du rendu
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 2, 5);
+// content setup
+const texts = [
+  ["Antan", "Digital Production\nDuo Toward Innovative\nAnd Immersive Projects"],
+  ["Portfolio", "Clean And Minimalist\nDesigns For\nMathéo PICHOT-MOÏSE"],
+  ["OratisAI", "Fast & Easy\nSpeech Recognition\nFor Your Business"]
+];
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// init plugin
+rgbKineticSlider = new rgbKineticSlider({
+  // images and content sources
+  slideImages: images, // array of images >demo size : 1920 x 1080
+  itemsTitles: texts,  // array of titles / subtitles
 
-// Ajout de la lumière pour voir la scène correctement
-const light = new THREE.PointLight(0xffffff, 2, 100);
-light.position.set(10, 10, 10);
-scene.add(light);
+  // displacement images sources
+  backgroundDisplacementSprite: "assets/map.jpg", // slide displacement image
+  cursorDisplacementSprite: "assets/displace.png", // cursor displacement image
 
-// Charger la scène JSON avec ObjectLoader
-const loader = new THREE.ObjectLoader();
-loader.load("assets/project.json", function (loadedScene) {
-    scene.add(loadedScene);
-    console.log("Scène chargée :", loadedScene);
-}, undefined, function (error) {
-    console.error("Erreur de chargement :", error);
-});
+  // cursor displacement effect
+  cursorImgEffect: true, // enable cursor effect
+  cursorTextEffect: false, // enable cursor text effect
+  cursorScaleIntensity: 0.65, // cursor effect intensity
+  cursorMomentum: 0.14, // lower is slower
 
-// Animation
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-animate();
+  // swipe
+  swipe: true, // enable swipe
+  swipeDistance: window.innerWidth * 0.4, // swipe distance - ex : 580
+  swipeScaleIntensity: 2, // scale intensity during swipping
 
-// Redimensionnement responsive
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+  // slide transition
+  slideTransitionDuration: 1, // transition duration
+  transitionScaleIntensity: 30, // scale intensity during transition
+  transitionScaleAmplitude: 160, // scale amplitude during transition
+
+  nav: false,
+
+  // image rgb effect
+  imagesRgbEffect: false, // enable img rgb effect
+  imagesRgbIntensity: 0.9, // set img rgb intensity
+  navImagesRgbIntensity: 80, // set img rgb intensity for regular nav
+
+  // texts settings
+  textsDisplay: true, // show title
+  textsSubTitleDisplay: true, // show subtitles
+  textsTiltEffect: true, // enable text tilt
+  googleFonts: ["Playfair Display:700", "Roboto:400"], // select google font to use
+  buttonMode: true, // enable button mode for title
+  textsRgbEffect: true, // enable text rgb effect
+  textsRgbIntensity: 0.03, // set text rgb intensity
+  navTextsRgbIntensity: 15, // set text rgb intensity for regular nav
+
+  textTitleColor: "white", // title color
+  textTitleSize: 125, // title size
+  mobileTextTitleSize: 125, // title size
+  textTitleLetterspacing: 3, // title letterspacing
+
+  textSubTitleColor: "white", // subtitle color ex : 0x000000
+  textSubTitleSize: 21, // subtitle size
+  mobileTextSubTitleSize: 21, // mobile subtitle size
+  textSubTitleLetterspacing: 2, // subtitle letter spacing
+  textSubTitleOffsetTop: 90,
+  mobileTextSubTitleOffsetTop: 90,
 });
